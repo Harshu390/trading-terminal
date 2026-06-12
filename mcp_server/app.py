@@ -163,7 +163,10 @@ with right:
 
     st.markdown("### Signal Score")
     st.progress(max(0, min(100, int(ind["score_percent"]))))
-    st.write(f'{ind["score"]} / 5 bullish checks passed')
+    st.write(f'{ind["score"]} / 5 {ind["score_label"].lower()} checks passed')
+    st.caption(
+        f'Bullish: {ind["bullish_score"]}/5 | Bearish: {ind["bearish_score"]}/5'
+    )
 
     st.markdown("### Levels")
     st.write("Support:", ind["support"])

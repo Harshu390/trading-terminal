@@ -202,6 +202,16 @@ def calculate_indicators(ticker: str, period: str = "6mo", interval: str = "1d")
         ema_recent["EMA20"] = ema20.tail(80).values
         ema_recent["EMA50"] = ema50.tail(80).values
 
+        active_score = bullish_score
+        active_score_label = "Bullish"
+
+        if "SELL" in signal:
+            active_score = bearish_score
+            active_score_label = "Bearish"
+        elif signal == "HOLD":
+            active_score = max(bullish_score, bearish_score)
+            active_score_label = "Neutral"
+
         return {
             "ticker": symbol,
             "period": period,
@@ -222,8 +232,11 @@ def calculate_indicators(ticker: str, period: str = "6mo", interval: str = "1d")
             "volume": int(volume_latest),
             "avg_volume_20": int(avg_volume_latest),
             "volume_status": "Above Average" if volume_latest > avg_volume_latest else "Below Average",
-            "score": bullish_score if "BUY" in signal or signal == "HOLD" else bearish_score,
-            "score_percent": (bullish_score if "BUY" in signal or signal == "HOLD" else bearish_score) * 20,
+            "bullish_score": bullish_score,
+            "bearish_score": bearish_score,
+            "score": active_score,
+            "score_label": active_score_label,
+            "score_percent": active_score * 20,
             "signal": signal,
             "ema_series": ema_recent[["Date", "EMA20", "EMA50"]].dropna().to_dict(orient="records"),
         }
