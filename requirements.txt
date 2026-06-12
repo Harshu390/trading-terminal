@@ -1,0 +1,11 @@
+mcp
+yfinance
+pandas
+ta
+streamlit
+anthropic
+python-dotenv
+Pillow
+streamlit-autorefresh
+plotly
+backtesting
