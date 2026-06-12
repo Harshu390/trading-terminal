@@ -32,7 +32,7 @@ timeframe_label = st.sidebar.selectbox(
 timeframe = TIMEFRAMES[timeframe_label]
 
 if "watchlist" not in st.session_state:
-    st.session_state.watchlist = ["RELIANCE", "TCS", "HDFCBANK", "INFY"]
+    st.session_state.watchlist = ["NIFTY 50", "BANKNIFTY", "RELIANCE", "TCS", "HDFCBANK", "INFY"]
 
 st.sidebar.markdown("## Watchlist")
 

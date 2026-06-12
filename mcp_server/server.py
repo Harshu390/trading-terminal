@@ -17,9 +17,30 @@ mcp = FastMCP("nse-stock-engine")
 
 def _normalize_ticker(ticker: str) -> str:
     ticker = ticker.strip().upper()
-    if not ticker.endswith(".NS") and not ticker.endswith(".BO"):
-        ticker += ".NS"
-    return ticker
+    compact = ticker.replace(" ", "").replace("-", "")
+
+    yahoo_aliases = {
+        "NIFTY": "^NSEI",
+        "NIFTY50": "^NSEI",
+        "NIFTYFIFTY": "^NSEI",
+        "NSEI": "^NSEI",
+        "^NSEI": "^NSEI",
+        "BANKNIFTY": "^NSEBANK",
+        "NIFTYBANK": "^NSEBANK",
+        "NSEBANK": "^NSEBANK",
+        "^NSEBANK": "^NSEBANK",
+        "FINNIFTY": "NIFTY_FIN_SERVICE.NS",
+        "NIFTYIT": "^CNXIT",
+        "MIDCPNIFTY": "NIFTY_MID_SELECT.NS",
+    }
+
+    if compact in yahoo_aliases:
+        return yahoo_aliases[compact]
+
+    if ticker.startswith("^") or ticker.endswith(".NS") or ticker.endswith(".BO"):
+        return ticker
+
+    return f"{ticker}.NS"
 
 
 def _safe_round(value, digits: int = 2):
